@@ -26,7 +26,6 @@ export function setupServer() {
   );
   app.use('/contacts', contactsRouter);
 
-  // app.get('/contacts', handleGetAllContacts);
   app.get('/contacts', async (req, res) => {
     const contacts = await handleGetAllContacts();
     res.status(200).json({
@@ -34,7 +33,6 @@ export function setupServer() {
     });
   });
 
-  // app.get('/contacts/:contactId', handleGetContactById);
   app.get('/contacts/:contactsId', async (req, res, next) => {
     const { contactsId } = req.params;
     const contacts = await handleGetContactById(contactsId);
