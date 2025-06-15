@@ -4,9 +4,10 @@ import app from './server.js';
 import { getEnvVar } from './utils/getEnvVar.js';
 
 const PORT = Number(getEnvVar('PORT', '3000'));
+
 async function startServer() {
   try {
-    await initMongoConnection.connect();
+    await initMongoConnection();
     console.log('Mongo connection successfully established!');
 
     app.listen(PORT, () => {

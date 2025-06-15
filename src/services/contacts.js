@@ -1,4 +1,4 @@
-import Contact from '../models/contact';
+import { Contact } from '../models/contact.js';
 
 // Получить все контакты
 export async function getAllContacts() {
