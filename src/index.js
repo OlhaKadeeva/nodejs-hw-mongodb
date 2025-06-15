@@ -1,10 +1,21 @@
 import 'dotenv/config';
-import { setupServer } from './server.js';
 import { initMongoConnection } from './db/initMongoConnection.js';
+import app from './server.js';
+import { getEnvVar } from './utils/getEnvVar.js';
 
-async function start() {
-  await initMongoConnection();
-  setupServer();
+const PORT = Number(getEnvVar('PORT', '3000'));
+async function startServer() {
+  try {
+    await initMongoConnection.connect();
+    console.log('Mongo connection successfully established!');
+
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to connect to MongoDB:', error.message);
+    process.exit(1);
+  }
 }
 
-start();
+startServer();
