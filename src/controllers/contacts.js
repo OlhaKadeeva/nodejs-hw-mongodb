@@ -8,9 +8,9 @@ import {
   removeContact,
 } from '../services/contacts.js';
 
-// GET /contacts
 export async function handleGetAllContacts(req, res) {
-  const contacts = await getAllContacts();
+  const contacts = await getAllContacts(req.query);
+
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
@@ -18,7 +18,6 @@ export async function handleGetAllContacts(req, res) {
   });
 }
 
-// GET /contacts/:contactId
 export async function handleGetContactById(req, res) {
   const { contactId } = req.params;
 
@@ -39,7 +38,6 @@ export async function handleGetContactById(req, res) {
   });
 }
 
-// POST /contacts
 export async function handleCreateContact(req, res) {
   const { name, phoneNumber, contactType } = req.body;
 
@@ -56,7 +54,6 @@ export async function handleCreateContact(req, res) {
   });
 }
 
-// PATCH /contacts/:contactId
 export async function handleUpdateContact(req, res) {
   const { contactId } = req.params;
 
@@ -77,7 +74,6 @@ export async function handleUpdateContact(req, res) {
   });
 }
 
-// DELETE /contacts/:contactId
 export async function handleDeleteContact(req, res) {
   const { contactId } = req.params;
 
@@ -91,5 +87,5 @@ export async function handleDeleteContact(req, res) {
     throw createError(404, 'Contact not found');
   }
 
-  res.status(204).send(); // Успешное удаление — пустой ответ
+  res.status(204).send();
 }
