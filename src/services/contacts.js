@@ -1,4 +1,5 @@
 import { Contact } from '../models/contact.js';
+import createError from 'http-errors';
 
 export const getAllContacts = async ({
   page = 1,
@@ -35,14 +36,41 @@ export const getAllContacts = async ({
   };
 };
 
-export async function getContactById(id) {
-  const contact = await Contact.findById(id);
+//Отримати один контакт по ID, що належить користувачу
+export async function getContactById(id, userId) {
+  const contact = await Contact.findById({ _id: id, userId });
+
+  if (!contact) {
+    throw createError(404, 'Contact not found');
+  }
   return contact;
 }
 
-export const createContact = (body) => Contact.create(body);
+//Створити контакт для користувача
+export const createContact = async (contactData, userId) => {
+  return await Contact.create({ ...contactData, userId });
+};
 
-export const updateContact = (id, data) =>
-  Contact.findByIdAndUpdate(id, data, { new: true });
+//Оновити контакт користувача
+export const updateContact = async (id, updateData, userId) => {
+  const contact = await Contact.findOneAndUpdate(
+    { _id: id, userId },
+    updateData,
+    { new: true },
+  );
+  if (!contact) {
+    throw createError(404, 'Contact not found');
+  }
+  return contact;
+};
 
-export const removeContact = (id) => Contact.findByIdAndDelete(id);
+//Видалити контакт користувача
+export const removeContact = async (id, userId) => {
+  const contact = await Contact.findByIdAndDelete({ _id: id, userId });
+
+  if (!contact) {
+    throw createError(404, 'Contact not found');
+  }
+
+  return contact;
+};

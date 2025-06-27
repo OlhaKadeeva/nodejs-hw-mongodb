@@ -13,22 +13,28 @@ import {
   createContactSchema,
   updateContactSchema,
 } from '../utils/contactValidationSchemas.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = express.Router();
 
+router.use(authenticate); // Захищає всі нижчі маршрути
+
 router.get('/', ctrlWrapper(handleGetAllContacts));
 router.get('/:contactId', isValidId, ctrlWrapper(handleGetContactById));
+
 router.post(
   '/',
   validateBody(createContactSchema),
   ctrlWrapper(handleCreateContact),
 );
+
 router.patch(
   '/:contactId',
   isValidId,
   validateBody(updateContactSchema),
   ctrlWrapper(handleUpdateContact),
 );
+
 router.delete('/:contactId', isValidId, ctrlWrapper(handleDeleteContact));
 
 export default router;
