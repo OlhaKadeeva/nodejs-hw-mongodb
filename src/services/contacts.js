@@ -67,7 +67,7 @@ export const updateContact = async (id, updateData, userId) => {
 
 //Видалити контакт користувача
 export const removeContact = async (id, userId) => {
-  const contact = await Contact.findByIdAndDelete({ _id: id, userId });
+  const contact = await Contact.findOneAndDelete({ _id: id, userId });
 
   if (!contact) {
     throw createError(404, 'Contact not found');
