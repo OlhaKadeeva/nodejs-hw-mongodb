@@ -31,11 +31,18 @@ export const refresh = async (req, res, next) => {
   try {
     const oldRefreshToken = req.cookies.refreshToken;
 
+    if (!oldRefreshToken) {
+      return res.status(401).json({
+        status: 401,
+        message: 'No refresh token provided',
+      });
+    }
+
     const { accessToken, refreshToken } = await refreshSession(oldRefreshToken);
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: 'Strict',
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
@@ -66,21 +73,16 @@ export const registerController = async (req, res, next) => {
 export const logout = async (req, res, next) => {
   try {
     const refreshToken = req.cookies.refreshToken;
+
     if (!refreshToken) {
-      return res.status(401).json({
-        status: 401,
-        message: 'User already logged out or no session found',
-      });
+      return res.status(201).end();
     }
 
     await logoutUser(refreshToken);
 
     res.clearCookie('refreshToken'); // Видаляємо cookie
 
-    res.status(200).json({
-      status: 200,
-      message: 'User successfully logged out',
-    });
+    res.status(204).end();
   } catch (error) {
     next(error);
   }

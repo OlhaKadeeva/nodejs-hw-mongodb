@@ -9,7 +9,8 @@ import {
 } from '../services/contacts.js';
 
 export async function handleGetAllContacts(req, res) {
-  const contacts = await getAllContacts(req.query);
+  const userId = req.user._id;
+  const contacts = await getAllContacts({ ...req.query, userId });
 
   res.status(200).json({
     status: 200,
@@ -18,14 +19,16 @@ export async function handleGetAllContacts(req, res) {
   });
 }
 
+// Отримати контакт по ID
 export async function handleGetContactById(req, res) {
   const { contactId } = req.params;
+  const userId = req.user._id;
 
   if (!mongoose.Types.ObjectId.isValid(contactId)) {
     throw createError(400, 'Invalid contact ID format');
   }
 
-  const contact = await getContactById(contactId);
+  const contact = await getContactById(contactId, userId);
 
   if (!contact) {
     throw createError(404, 'Contact not found');
@@ -38,14 +41,16 @@ export async function handleGetContactById(req, res) {
   });
 }
 
+// Створити новий контакт
 export async function handleCreateContact(req, res) {
   const { name, phoneNumber, contactType } = req.body;
+  const userId = req.user._id;
 
   if (!name || !phoneNumber || !contactType) {
     throw createError(400, 'Missing required fields');
   }
 
-  const newContact = await createContact(req.body);
+  const newContact = await createContact(req.body, userId);
 
   res.status(201).json({
     status: 201,
@@ -54,14 +59,16 @@ export async function handleCreateContact(req, res) {
   });
 }
 
+// Оновити контакт
 export async function handleUpdateContact(req, res) {
   const { contactId } = req.params;
+  const userId = req.user._id;
 
   if (!mongoose.Types.ObjectId.isValid(contactId)) {
     throw createError(400, 'Invalid contact ID format');
   }
 
-  const updatedContact = await updateContact(contactId, req.body);
+  const updatedContact = await updateContact(contactId, req.body, userId);
 
   if (!updatedContact) {
     throw createError(404, 'Contact not found');
@@ -74,18 +81,20 @@ export async function handleUpdateContact(req, res) {
   });
 }
 
+// Видалити контакт
 export async function handleDeleteContact(req, res) {
   const { contactId } = req.params;
+  const userId = req.user._id;
 
   if (!mongoose.Types.ObjectId.isValid(contactId)) {
     throw createError(400, 'Invalid contact ID format');
   }
 
-  const deleted = await removeContact(contactId);
+  const deleted = await removeContact(contactId, userId);
 
   if (!deleted) {
     throw createError(404, 'Contact not found');
   }
 
-  res.status(204).send();
+  res.status(204).end();
 }

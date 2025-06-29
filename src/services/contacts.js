@@ -8,11 +8,12 @@ export const getAllContacts = async ({
   sortOrder = 'asc',
   type,
   isFavourite,
+  userId,
 }) => {
   const skip = (page - 1) * perPage;
   const sortDirection = sortOrder === 'desc' ? -1 : 1;
 
-  const filter = {};
+  const filter = { userId }; //фільтрація тільки за поточним юзером
   if (type) filter.contactType = type;
   if (typeof isFavourite !== 'undefined')
     filter.isFavourite = isFavourite === 'true';
@@ -37,14 +38,14 @@ export const getAllContacts = async ({
 };
 
 //Отримати один контакт по ID, що належить користувачу
-export async function getContactById(id, userId) {
-  const contact = await Contact.findById({ _id: id, userId });
+export const getContactById = async (id, userId) => {
+  const contact = await Contact.findOne({ _id: id, userId });
 
   if (!contact) {
     throw createError(404, 'Contact not found');
   }
   return contact;
-}
+};
 
 //Створити контакт для користувача
 export const createContact = async (contactData, userId) => {
