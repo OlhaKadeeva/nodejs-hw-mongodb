@@ -7,6 +7,7 @@ import {
   updateContact,
   removeContact,
 } from '../services/contacts.js';
+import { uploadImage } from '../services/cloudinary.js';
 
 export async function handleGetAllContacts(req, res) {
   const userId = req.user._id;
@@ -43,8 +44,15 @@ export async function handleGetContactById(req, res) {
 
 // Створити новий контакт
 export async function handleCreateContact(req, res) {
-  const { name, phoneNumber, contactType } = req.body;
   const userId = req.user._id;
+
+  // Если есть файл — загрузи и добавь в req.body
+  if (req.file) {
+    const photo = await uploadImage(req.file.path);
+    req.body.photo = photo; // Добавляем ссылку сразу
+  }
+
+  const { name, phoneNumber, contactType } = req.body;
 
   if (!name || !phoneNumber || !contactType) {
     throw createError(400, 'Missing required fields');
@@ -68,7 +76,17 @@ export async function handleUpdateContact(req, res) {
     throw createError(400, 'Invalid contact ID format');
   }
 
-  const updatedContact = await updateContact(contactId, req.body, userId);
+  let photo;
+
+  if (req.file) {
+    photo = await uploadImage(req.file.path);
+  }
+
+  const updatedContact = await updateContact(
+    contactId,
+    { ...req.body, photo },
+    userId,
+  );
 
   if (!updatedContact) {
     throw createError(404, 'Contact not found');

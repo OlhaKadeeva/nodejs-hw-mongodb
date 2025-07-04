@@ -43,7 +43,7 @@ export const registerUser = async ({ name, email, password }) => {
 //Логін користувача
 export const loginUser = async ({ email, password }) => {
   const user = await User.findOne({ email });
-  if (!user) throw createError(401, 'Invalid email or password');
+  if (!user) throw createError(401, 'Invalid: email or password');
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) throw createError(401, 'Invalid email or password');
