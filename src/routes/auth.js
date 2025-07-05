@@ -27,7 +27,7 @@ router.post(
 );
 
 router.post(
-  '/reset-password',
+  '/reset-pwd',
   validateBody(resetPasswordSchema), // схема с token и password
   resetPassword,
 );

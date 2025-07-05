@@ -11,10 +11,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 //  Создаем транспортер
+const port = parseInt(process.env.SMTP_PORT, 10);
+const secure = port === 465;
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT),
-  secure: false,
+  port,
+  secure,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD,
@@ -57,11 +60,11 @@ export const sendResetEmail = async (email, token, name = 'Користувач'
     };
 
     // Отправка письма
-    console.log(' Sending email to:', email);
+    console.log('Sending email to:', email);
     await transporter.sendMail(mailOptions);
-    console.log(' Email sent successfully to', email);
+    console.log('Email sent successfully to', email);
   } catch (error) {
-    console.error(' Email send failed:', error.message);
+    console.error('Email send failed:', error.message);
     throw new Error('Failed to send the email, please try again later.');
   }
 };

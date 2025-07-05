@@ -1,24 +1,19 @@
 import Joi from 'joi';
 
 export const createContactSchema = Joi.object({
-  name: Joi.string().min(2).max(50).required(),
-  phoneNumber: Joi.string()
-    .pattern(/^\+?[0-9]{10,15}$/)
-    .required()
-    .messages({
-      'string.pattern.base': 'Phone number must be valid',
-    }),
-  contactType: Joi.string().valid('personal', 'business', 'other').required(),
-  photo: Joi.string().uri().optional(), // якщо  дозволяєm передавати фото вручну
+  name: Joi.string().min(3).max(20).required(),
+  email: Joi.string().email().required(),
+  phoneNumber: Joi.string().required(),
+  contactType: Joi.string().valid('personal', 'work', 'other').required(),
+  isFavourite: Joi.boolean().optional(),
+  photo: Joi.string().uri().optional(),
 });
 
 export const updateContactSchema = Joi.object({
-  name: Joi.string().min(2).max(50),
-  phoneNumber: Joi.string()
-    .pattern(/^\+?[0-9]{10,15}$/)
-    .messages({
-      'string.pattern.base': 'Phone number must be valid',
-    }),
-  contactType: Joi.string().valid('personal', 'business', 'other'),
+  name: Joi.string().min(3).max(20),
+  email: Joi.string().email(),
+  phoneNumber: Joi.string(),
+  contactType: Joi.string().valid('personal', 'work', 'other'),
+  isFavourite: Joi.boolean(),
   photo: Joi.string().uri(),
-}).min(1); // хоча б одне поле обов'язкове при оновленні
+}).min(1);
