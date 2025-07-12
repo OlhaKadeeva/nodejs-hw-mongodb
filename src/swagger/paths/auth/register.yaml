@@ -1,0 +1,16 @@
+tags:
+  - Auth
+summary: Register User
+operationId: Register
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../../components/schemas/Register.yaml'
+responses:
+  '201':
+    description: Користувача зареєстровано
+  '400':
+    $ref: '../../components/responces/ValidationError.yaml'

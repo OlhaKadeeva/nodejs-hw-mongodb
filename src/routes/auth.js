@@ -9,6 +9,10 @@ import { refresh } from '../controllers/auth.js';
 import { logout } from '../controllers/auth.js';
 import { sendResetPasswordEmail } from '../controllers/auth.js';
 import { resetEmailSchema } from '../schemas/resetEmailSchema.js';
+import {
+  getGoogleAuthUrl,
+  handleGoogleAuthCallback,
+} from '../controllers/googleAuth.js';
 
 const router = express.Router();
 
@@ -31,5 +35,9 @@ router.post(
   validateBody(resetPasswordSchema), // схема с token и password
   resetPassword,
 );
+
+router.get('/google-auth', getGoogleAuthUrl); // новий маршрут
+
+router.get('/google-callback', handleGoogleAuthCallback); //обробка
 
 export default router;

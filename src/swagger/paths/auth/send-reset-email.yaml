@@ -1,0 +1,17 @@
+tags:
+  - Auth
+summary: Send password reset email
+operationId: sendResetEmail
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/SendResetEmail.yaml
+responses:
+  '200':
+    description: Email sent
+  '404':
+    description: User not found

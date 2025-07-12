@@ -1,0 +1,25 @@
+tags:
+  - Contacts
+summary: Оновити контакт за ID
+operationId: updateContactById
+security:
+  - bearerAuth: []
+parameters:
+  - $ref: '../../../components/parameters/ContactId.yaml'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../../../components/schemas/ContactUpdate.yaml'
+responses:
+  '200':
+    description: Контакт оновлено
+    content:
+      application/json:
+        schema:
+          $ref: '../../../components/schemas/Contact.yaml'
+  '404':
+    $ref: '../../../components/responces/ValidationError.yaml'
+  '401':
+    $ref: '../../../components/responces/ValidationError.yaml'

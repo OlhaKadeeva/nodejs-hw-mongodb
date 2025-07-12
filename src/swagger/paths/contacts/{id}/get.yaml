@@ -1,0 +1,19 @@
+tags:
+  - Contacts
+summary: Отримати контакт за ID
+operationId: getContactById
+security:
+  - bearerAuth: []
+parameters:
+  - $ref: '../../../components/parameters/ContactId.yaml'
+responses:
+  '200':
+    description: Контакт знайдено
+    content:
+      application/json:
+        schema:
+          $ref: '../../../components/schemas/Contact.yaml'
+  '404':
+    $ref: '../../../components/responces/ValidationError.yaml'
+  '401':
+    $ref: '../../../components/responces/ValidationError.yaml'

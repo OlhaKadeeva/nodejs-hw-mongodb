@@ -1,0 +1,15 @@
+tags:
+  - Contacts
+summary: Видалити контакт за ID
+operationId: deleteContactById
+security:
+  - bearerAuth: []
+parameters:
+  - $ref: '../../../components/parameters/ContactId.yaml'
+responses:
+  '204':
+    description: Контакт видалено
+  '404':
+    $ref: '../../../components/responces/ValidationError.yaml'
+  '401':
+    $ref: '../../../components/responces/ValidationError.yaml'

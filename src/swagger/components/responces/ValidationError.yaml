@@ -1,0 +1,20 @@
+description: Помилка валідації
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'Validation failed'
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: 'email'
+              error:
+                type: string
+                example: 'Email must be valid'

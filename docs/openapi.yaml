@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Contacts API
+  version: 1.0.0
+  description: API для управління контактами, з авторизацією, email та Cloudinary
+servers:
+  - url: http://localhost:3000
+  - url: https://contacts-app.onrender.com
+tags:
+  - name: Contacts
+    description: Operations about users.
+  - name: Auth
+    description: Auth operations.
+
+paths:
+  /auth/login:
+    post:
+      $ref: '../src/swagger/paths/auth/login.yaml'
+
+  /auth/register:
+    post:
+      $ref: '../src/swagger/paths/auth/register.yaml'
+  /auth/send-reset-email:
+    post:
+      $ref: '../src/swagger/paths/auth/send-reset-email.yaml'
+  /auth/reset-password:
+    post:
+      $ref: '../src/swagger/paths/auth/reset-password.yaml'
+  /contacts:
+    get:
+      $ref: '../src/swagger/paths/contacts/get-all.yaml'
+    post:
+      $ref: '../src/swagger/paths/contacts/post.yaml'
+  /contacts/{id}:
+    get:
+      $ref: '../src/swagger/paths/contacts/{id}/get.yaml'
+    patch:
+      $ref: '../src/swagger/paths/contacts/{id}/patch.yaml'
+    delete:
+      $ref: '../src/swagger/paths/contacts/{id}/delete.yaml'
+
+components:
+  schemas:
+    User:
+      $ref: '../src/swagger/components/schemas/User.yaml'
+    Login:
+      $ref: '../src/swagger/components/schemas/Login.yaml'
+    Register:
+      $ref: '../src/swagger/components/schemas/Register.yaml'
+    ResetPassword:
+      $ref: '../src/swagger/components/schemas/ResetPassword.yaml'
+    SendResetEmail:
+      $ref: '../src/swagger/components/schemas/SendResetEmail.yaml'
+    Contact:
+      $ref: '../src/swagger/components/schemas/Contact.yaml'
+    ContactCreate:
+      $ref: '../src/swagger/components/schemas/ContactCreate.yaml'
+    ContactUpdate:
+      $ref: '../src/swagger/components/schemas/ContactUpdate.yaml'
+
+  responses:
+    NotFound:
+      $ref: '../src/swagger/components/responces/NotFound.yaml'
+    ValidationError:
+      $ref: '../src/swagger/components/responces/ValidationError.yaml'
+
+  parameters:
+    ContactId:
+      $ref: '../src/swagger/components/parameters/ContactId.yaml'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,23 @@
+tags:
+  - Contacts
+summary: Створити контакт
+operationId: createContact
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../../components/schemas/ContactCreate.yaml'
+responses:
+  '201':
+    description: Контакт створено
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/Contact.yaml'
+  '400':
+    $ref: '../../components/responces/ValidationError.yaml'
+  '401':
+    $ref: '../../components/responces/ValidationError.yaml'
